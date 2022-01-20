@@ -565,7 +565,7 @@ double Player::getGlanceReduction( Weapon& weapon )
 
 int Player::getGlanceChance( Weapon& weapon )
 {
-    return 1000 + ( target.defense - std::min( level * 5, stats.skill[weapon.type] ) ) * 200;
+    return 4000;
 }
 
 int Player::getMissChance( Weapon& weapon )
