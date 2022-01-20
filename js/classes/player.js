@@ -470,7 +470,7 @@ class Player {
         else return avg(low, high);
     }
     getGlanceChance(weapon) {
-        return 10 + (this.target.defense - Math.min(this.level * 5, this.stats['skill_' + weapon.type])) * 2;
+        return 40;
     }
     getMissChance(weapon) {
         let diff = this.target.defense - this.stats['skill_' + weapon.type];
