@@ -306,6 +306,8 @@ void Player::addBuffs()
             if ( buff.id == 2458 ) zerkstance = true;
             if ( buff.id == 23513 ) vaelbuff = true;
             if ( buff.id == 12217 ) dragonbreath = true;
+            if ( buff.id == 29232 ) loathebspore = true;
+            if ( buff.id == 28059 ) thaddiusbuff = true;
 
             base.ap += buff.stats.ap + apbonus;
             base.agi += buff.stats.agi;

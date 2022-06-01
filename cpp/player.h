@@ -82,6 +82,8 @@ struct Player
     bool zerkstance = false;
     bool vaelbuff = false;
     bool dragonbreath = false;
+    bool loathebspore = false;
+    bool thaddiusbuff = false;
 
     int testEnch = -1;
     int testEnchType = -1;
