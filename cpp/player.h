@@ -61,7 +61,9 @@ struct Player
         BloodrageAura,
         Zandalarian,
         AvengerMH,
-        AvengerOH
+        AvengerOH,
+        ThadiusCharge,
+        FungalBloom
     > auras;
 
     double rage = 0;

@@ -66,6 +66,8 @@ int main()
     options = spellOptions( 11597 ); options[0] = 1; options[1] = 1; options[2] = 300;
     options = spellOptions( 7373 ); options[0] = 0; options[1] = 50; options[2] = 100;
     options = spellOptions( 115671 ); options[0] = 0; options[1] = 30; options[2] = 0; options[3] = 200; options[4] = 100;
+    options = spellOptions( 29232 ); options[0] = 0; options[1] = 90;
+    options = spellOptions( 28059 ); options[0] = 0; options[1] = 30;
     Config* cfg = allocConfig();
     cfg->sim.timesecsmin = 50;
     cfg->sim.timesecsmax = 60;

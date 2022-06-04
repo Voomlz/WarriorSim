@@ -177,5 +177,22 @@ var spells = [
     unqueuetimer: 200,
     reaction: 100,
 },
-
+    {
+        id: 29232,
+        aura: true,
+        name: 'Fungal Bloom',
+        classname: 'FungalBloom',
+        iconname: "spell_nature_unyeildingstamina",
+        crit: 50,
+        timetoend: 90,
+    },
+    {
+        id: 28059,
+        aura: true,
+        name: "Positive Charge",
+        classname: 'ThadiusCharge',
+        iconname: "spell_chargepositive",
+        dmgmod: 190,
+        timetoend: 60,
+    },
 ];

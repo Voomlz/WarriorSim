@@ -188,6 +188,8 @@ int* spellOptions( int id )
     case 11597: return reinterpret_cast<int*>( &SunderArmor::options );
     case 7373: return reinterpret_cast<int*>( &Hamstring::options );
     case 115671: return reinterpret_cast<int*>( &HeroicStrikeExecute::options );
+    case 28059: return reinterpret_cast<int*>( &ThadiusCharge::options );
+    case 29232: return reinterpret_cast<int*>( &FungalBloom::options );
     default: return nullptr;
     }
 }

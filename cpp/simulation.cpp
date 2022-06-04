@@ -97,6 +97,8 @@ void Simulation::run()
             else if ( auto* ptr = player.auras.ptr<Flask>(); ptr && ptr->canUse() && step > flaskstep ) { player.spelldelay = 1; delayedspell = ptr; }
             else if ( auto* ptr = player.auras.ptr<Cloudkeeper>(); ptr && ptr->canUse() && step > cloudstep ) { player.spelldelay = 1; delayedspell = ptr; }
             else if ( auto* ptr = player.auras.ptr<Recklessness>(); ptr && ptr->canUse() ) { player.spelldelay = 1; delayedspell = ptr; }
+            else if ( auto* ptr = player.auras.ptr<ThadiusCharge>(); ptr && ptr->canUse() ) { player.spelldelay = 1; delayedspell = ptr; }
+            else if ( auto* ptr = player.auras.ptr<FungalBloom>(); ptr && ptr->canUse() ) { player.spelldelay = 1; delayedspell = ptr; }
             else if ( auto* ptr = player.auras.ptr<DeathWish>(); ptr && ptr->canUse() ) { player.spelldelay = 1; delayedspell = ptr; }
             else if ( auto* ptr = player.auras.ptr<BloodFury>(); ptr && ptr->canUse() ) { player.spelldelay = 1; delayedspell = ptr; }
             else if ( auto* ptr = player.auras.ptr<Berserking>(); ptr && ptr->canUse() ) { player.spelldelay = 1; delayedspell = ptr; }

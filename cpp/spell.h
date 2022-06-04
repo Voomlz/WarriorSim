@@ -374,6 +374,56 @@ struct Recklessness : public Aura
     bool canUse() const override;
 };
 
+struct ThadiusCharge : public Aura
+{
+    const char* name() const override
+    {
+        return "ThadiusCharge";
+    }
+
+    static struct
+    {
+        int active = true;
+        int timetoend = 30;
+        int reaction = 300;
+    } options;
+
+    ThadiusCharge( Player& player_ )
+        : Aura( player_ )
+    {
+        duration = 30;
+        mult_stats.dmgmod = 190;
+    }
+
+    void use() override;
+    bool canUse() const override;
+};
+
+struct FungalBloom : public Aura
+{
+    const char* name() const override
+    {
+        return "FungalBloom";
+    }
+
+    static struct
+    {
+        int active = true;
+        int timetoend = 90;
+        int reaction = 300;
+    } options;
+
+    FungalBloom( Player& player_ )
+        : Aura( player_ )
+    {
+        duration = 90;
+        stats.crit = stats.crit+50;
+    }
+
+    void use() override;
+    bool canUse() const override;
+};
+
 struct Flurry : public HasteAura
 {
     const char* name() const override

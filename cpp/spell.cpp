@@ -301,6 +301,33 @@ bool Recklessness::canUse() const
     return firstuse && timer == 0 && player.timer == 0 && player.simulation.step >= player.simulation.maxsteps - options.timetoend * 1000;
 }
 
+// ThadiusCharge
+decltype( ThadiusCharge::options ) ThadiusCharge::options;
+
+void ThadiusCharge::use()
+{
+    player.timer = 3000;
+    Aura::use();
+}
+
+bool ThadiusCharge::canUse() const
+{
+    return firstuse && timer == 0 && player.timer == 0 && player.simulation.step >= player.simulation.maxsteps - options.timetoend * 1000;
+}
+
+// FungalBloom
+decltype( FungalBloom::options ) FungalBloom::options;
+
+void FungalBloom::use()
+{
+    player.timer = 9000;
+    Aura::use();
+}
+
+bool FungalBloom::canUse() const
+{
+    return firstuse && timer == 0 && player.timer == 0 && player.simulation.step >= player.simulation.maxsteps - options.timetoend * 1000;
+}
 // Flurry
 
 Flurry::Flurry( Player& player_ )

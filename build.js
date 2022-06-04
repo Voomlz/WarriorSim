@@ -108,7 +108,7 @@ async function run_build(flags, oname, dirs) {
           console.log('Compiling...');
           firstFile = false;
         }
-        const cmd = `emcc ${name} -o ${out} ${name.match(/\.(?:cpp|cc)$/i) ? "--std=c++17 " : ""} -c -Wno-logical-op-parentheses ${flags} -I.`;
+        const cmd = `/home/patrick-edouard/emsdk/upstream/emscripten/emcc ${name} -o ${out} ${name.match(/\.(?:cpp|cc)$/i) ? "--std=c++17 " : ""} -c -Wno-logical-op-parentheses ${flags} -I.`;
         try {
           const {stderr} = await execute(cmd, () => console.log(`  ${name}`));
           if (stderr) {
@@ -146,7 +146,7 @@ async function run_build(flags, oname, dirs) {
 
   console.log(`Linking ${oname}`);
 
-  const cmd = `emcc ${link_list.join(" ")} -o ${oname}.js -s EXPORT_NAME="${oname}" ${flags} -s WASM=1 -s MODULARIZE=1 -s NO_FILESYSTEM=1 --post-js ./module-post.js -s TOTAL_MEMORY=16777216 -s DISABLE_EXCEPTION_CATCHING=0`;
+  const cmd = `/home/patrick-edouard/emsdk/upstream/emscripten/emcc ${link_list.join(" ")} -o ${oname}.js -s EXPORT_NAME="${oname}" ${flags} -s WASM=1 -s MODULARIZE=1 -s NO_FILESYSTEM=1 --post-js ./module-post.js -s TOTAL_MEMORY=16777216 -s DISABLE_EXCEPTION_CATCHING=0`;
   const {stderr} = await execute(cmd);
   if (stderr) {
     console.error(stderr);

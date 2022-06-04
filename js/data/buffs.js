@@ -258,22 +258,6 @@ var buffs = [
       group: "vaelbuff",
    },
    {
-      id: 29232,
-      spellid: true,
-      name: "Fungal Bloom",
-      iconname: "spell_nature_unyeildingstamina",
-      group: "loathebspore",
-      crit: 50,
-   },
-   {
-      id: 28059,
-      spellid: true,
-      name: "Positive Charge",
-      iconname: "spell_chargepositive",
-      group: "thaddiusbuff",
-      dmgmod: 190,
-   },
-   {
       id: 12217,
       name: "Dragonbreath Chili",
       iconname: "inv_drink_17",

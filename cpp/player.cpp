@@ -345,6 +345,8 @@ void Player::addSpells()
     if ( Berserking::options.active ) auras.emplace<Berserking>( *this );
     if ( BloodFury::options.active ) auras.emplace<BloodFury>( *this );
     if ( MightyRagePotion::options.active ) auras.emplace<MightyRagePotion>( *this );
+    if ( ThadiusCharge::options.active ) auras.emplace<ThadiusCharge>( *this );
+    if ( FungalBloom::options.active ) auras.emplace<FungalBloom>( *this );
 }
 
 void Player::reset( double rage_ )
@@ -667,6 +669,8 @@ void Player::stepauras()
 
     if ( auto* aura = auras.ptr<MightyRagePotion>(); aura && aura->firstuse && aura->timer ) aura->step();
     if ( auto* aura = auras.ptr<Recklessness>(); aura && aura->firstuse && aura->timer ) aura->step();
+    if ( auto* aura = auras.ptr<ThadiusCharge>(); aura && aura->firstuse && aura->timer ) aura->step();
+    if ( auto* aura = auras.ptr<FungalBloom>(); aura && aura->firstuse && aura->timer ) aura->step();
     if ( auto* aura = auras.ptr<DeathWish>(); aura && aura->firstuse && aura->timer ) aura->step();
     if ( auto* aura = auras.ptr<Cloudkeeper>(); aura && aura->firstuse && aura->timer ) aura->step();
     if ( auto* aura = auras.ptr<Flask>(); aura && aura->firstuse && aura->timer ) aura->step();
@@ -698,6 +702,8 @@ void Player::endauras()
 
     if ( auto* aura = auras.ptr<MightyRagePotion>(); aura && aura->firstuse && aura->timer ) aura->end();
     if ( auto* aura = auras.ptr<Recklessness>(); aura && aura->firstuse && aura->timer ) aura->end();
+    if ( auto* aura = auras.ptr<ThadiusCharge>(); aura && aura->firstuse && aura->timer ) aura->end();
+    if ( auto* aura = auras.ptr<FungalBloom>(); aura && aura->firstuse && aura->timer ) aura->end();
     if ( auto* aura = auras.ptr<DeathWish>(); aura && aura->firstuse && aura->timer ) aura->end();
     if ( auto* aura = auras.ptr<Cloudkeeper>(); aura && aura->firstuse && aura->timer ) aura->end();
     if ( auto* aura = auras.ptr<Flask>(); aura && aura->firstuse && aura->timer ) aura->end();

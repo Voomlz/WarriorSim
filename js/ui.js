@@ -68,7 +68,7 @@ SIM.UI = {
             $('section.settings').removeClass('active');
         });
 
-        view.body.on('click', '.js-table', function(e) {
+        view.body.on('click', '.js-table', function (e) {
             e.preventDefault();
             view.disableEditMode();
             const rows = view.tcontainer.find('table.gear tbody tr');
@@ -78,17 +78,17 @@ SIM.UI = {
             view.simulateDPS(rows);
         });
 
-        view.main.on('click', '.js-enchant', function(e) {
+        view.main.on('click', '.js-enchant', function (e) {
             e.preventDefault();
             view.disableEditMode();
-            const rows = view.tcontainer.find('table.enchant tbody tr'); 
+            const rows = view.tcontainer.find('table.enchant tbody tr');
             rows.addClass('waiting');
             view.tcontainer.find('table.enchant tbody tr td:last-of-type').html('');
             view.startLoading();
             view.simulateDPS(rows);
         });
 
-        view.main.on('click', '.js-editmode', function(e) {
+        view.main.on('click', '.js-editmode', function (e) {
             e.preventDefault();
             $(this).toggleClass('active');
             window.scrollTo(0, 0);
@@ -106,15 +106,15 @@ SIM.UI = {
             var type = li.data('type');
             if (!type) type = li.parents('[data-type]').data('type');
 
-            if (type == "mainhand" || type == "offhand" || type == "twohand") 
+            if (type == "mainhand" || type == "offhand" || type == "twohand")
                 view.loadWeapons(type);
-            else if (type == "custom") 
+            else if (type == "custom")
                 view.loadCustom();
             else
                 view.loadGear(type);
         });
 
-        view.tcontainer.on('click', 'table.gear td:not(.ppm)', function(e) {
+        view.tcontainer.on('click', 'table.gear td:not(.ppm)', function (e) {
             var table = $(this).parents('table');
             var type = table.data('type');
             var max = table.data('max');
@@ -130,8 +130,7 @@ SIM.UI = {
 
             if (tr.hasClass('active')) {
                 view.rowDisableItem(tr);
-            }
-            else {
+            } else {
                 var counter = table.find('tr.active').length;
                 if (counter >= max) view.rowDisableItem(table.find('tr.active').last());
                 view.rowEnableItem(tr);
@@ -141,7 +140,7 @@ SIM.UI = {
             view.updateSidebar();
         });
 
-        view.tcontainer.on('click', 'table.enchant td:not(.ppm)', function(e) {
+        view.tcontainer.on('click', 'table.enchant td:not(.ppm)', function (e) {
             var table = $(this).parents('table');
             var tr = $(this).parent();
             var temp = tr.data('temp');
@@ -156,8 +155,7 @@ SIM.UI = {
 
             if (tr.hasClass('active')) {
                 view.rowDisableEnchant(tr);
-            }
-            else {
+            } else {
                 let disable = table.find('tr.active[data-temp="' + temp + '"]').first();
                 if (disable.length) view.rowDisableEnchant(disable);
                 view.rowEnableEnchant(tr);
@@ -168,30 +166,30 @@ SIM.UI = {
         });
     },
 
-    enableEditMode: function() {
+    enableEditMode: function () {
         var view = this;
         let type = view.tcontainer.find('table.gear').attr('data-type');
-        if (type == "mainhand" || type == "offhand" || type == "twohand") 
+        if (type == "mainhand" || type == "offhand" || type == "twohand")
             view.loadWeapons(type, true);
-        else if (type == "custom") 
+        else if (type == "custom")
             view.loadCustom(true);
         else
             view.loadGear(type, true);
     },
 
-    disableEditMode: function() {
+    disableEditMode: function () {
         var view = this;
         view.main.find('.js-editmode').removeClass('active');
         let type = view.tcontainer.find('table.gear').attr('data-type');
-        if (type == "mainhand" || type == "offhand" || type == "twohand") 
+        if (type == "mainhand" || type == "offhand" || type == "twohand")
             view.loadWeapons(type, false);
-        else if (type == "custom") 
+        else if (type == "custom")
             view.loadCustom(false);
         else
             view.loadGear(type, false);
     },
 
-    simulateDPS: function(rows) {
+    simulateDPS: function (rows) {
         let view = this;
         let dps = view.sidebar.find('#dps');
         let error = view.sidebar.find('#dpserr');
@@ -243,7 +241,7 @@ SIM.UI = {
                 SIM.STATS.initCharts(report);
                 sim = null;
                 player = null;
-                
+
             },
             (iteration, report) => {
                 // Update
@@ -259,27 +257,31 @@ SIM.UI = {
         sim.start(params);
     },
 
-    simulateWeights: function(player, mean, varmean) {
+    simulateWeights: function (player, mean, varmean) {
         const view = this;
         const btn = view.sidebar.find('.js-weights');
         const totalTasks = (player.auras.bloodfury ? 4 : 3);
         view.sidebar.find('#weights-div').css('display', 'block');
         view.sidebar.find('#weights-div > div').addClass('loading').append('<span class="spinner"><span class="bounce1"></span><span class="bounce2"></span><span class="bounce3"></span></span>');
         let tasksDone = 0;
+
         function updateFn(progress) {
             const perc = parseInt(100 * (tasksDone + progress) / totalTasks);
             btn.css('background', 'linear-gradient(to right, transparent ' + perc + '%, #444 ' + perc + '%)');
         }
+
         const simulateWeight = (stat, amount) => this.simulateStat(stat, amount, updateFn).then(result => {
             tasksDone += 1;
             return {weight: (result.mean - mean) / amount, error: 1.96 * Math.sqrt(varmean + result.varmean) / amount};
         });
+
         function updateStat(name, {weight, error}) {
             const line = view.sidebar.find('#weight-' + name);
             line.removeClass('loading').find('.spinner').remove();
             line.find('.stat-dps').text(weight.toFixed(2));
             line.find('.stat-error').text(error.toFixed(2));
         }
+
         async function simulateAll() {
             const ap = await simulateWeight(0, 50);
             updateStat("ap", ap);
@@ -315,7 +317,7 @@ SIM.UI = {
         );
     },
 
-    simulateStat: function(stat, amount, updateFn) {
+    simulateStat: function (stat, amount, updateFn) {
         return new Promise((resolve, reject) => {
             const params = {
                 player: [amount, stat, 3, Player.getConfig()],
@@ -340,12 +342,12 @@ SIM.UI = {
         });
     },
 
-    simulateRows: function(rows) {
+    simulateRows: function (rows) {
         var view = this;
         var btn = view.sidebar.find('.js-table');
 
         const simulations = rows.map((row) => {
-            const simulation = { perc: 0 };
+            const simulation = {perc: 0};
             simulation.run = () => {
                 // Remove from pending simulations
                 pending.delete(simulation);
@@ -387,7 +389,7 @@ SIM.UI = {
         }
     },
 
-    simulateRow: function(tr, updateFn) {
+    simulateRow: function (tr, updateFn) {
         var view = this;
         var dps = tr.find('td:last-of-type');
         var type = tr.parents('table').data('type');
@@ -411,24 +413,23 @@ SIM.UI = {
                 else span.addClass('n');
                 dps.text(calc.toFixed(2)).append(span);
 
-                view.tcontainer.find('table').each(function() {
+                view.tcontainer.find('table').each(function () {
                     if (type == "custom") return;
                     $(this).trigger('update');
                     let sortList = [[$(this).find('th').length - 1, 1]];
                     $(this).trigger("sorton", [sortList]);
                 });
-                
+
                 tr.removeClass('waiting');
                 updateFn(100);
                 sim = null;
 
                 if (isench) {
-                    for(let i of enchant[type])
+                    for (let i of enchant[type])
                         if (i.id == item)
                             i.dps = calc.toFixed(2);
-                }
-                else {
-                    for(let i of gear[type])
+                } else {
+                    for (let i of gear[type])
                         if (i.id == item)
                             i.dps = calc.toFixed(2);
                 }
@@ -446,21 +447,21 @@ SIM.UI = {
         sim.start(params);
     },
 
-    rowDisableItem: function(tr) {
+    rowDisableItem: function (tr) {
         var table = tr.parents('table');
         var type = table.data('type');
         tr.removeClass('active');
-        for(let i = 0; i < gear[type].length; i++) {
+        for (let i = 0; i < gear[type].length; i++) {
             if (gear[type][i].id == tr.data('id'))
                 gear[type][i].selected = false;
         }
     },
 
-    rowEnableItem: function(tr) {
+    rowEnableItem: function (tr) {
         var table = tr.parents('table');
         var type = table.data('type');
         tr.addClass('active');
-        for(let i = 0; i < gear[type].length; i++) {
+        for (let i = 0; i < gear[type].length; i++) {
             if (gear[type][i].id == tr.data('id'))
                 gear[type][i].selected = true;
             else if (type != "finger" && type != "trinket" && type != "custom")
@@ -468,31 +469,31 @@ SIM.UI = {
         }
 
         if (type == "twohand") {
-            for(let i = 0; i < gear.mainhand.length; i++)
+            for (let i = 0; i < gear.mainhand.length; i++)
                 gear.mainhand[i].selected = false;
-            for(let i = 0; i < gear.offhand.length; i++)
+            for (let i = 0; i < gear.offhand.length; i++)
                 gear.offhand[i].selected = false;
-            for(let i = 0; i < enchant.mainhand.length; i++)
+            for (let i = 0; i < enchant.mainhand.length; i++)
                 enchant.mainhand[i].selected = false;
-            for(let i = 0; i < enchant.offhand.length; i++)
+            for (let i = 0; i < enchant.offhand.length; i++)
                 enchant.offhand[i].selected = false;
         }
 
         if (type == "mainhand" || type == "offhand") {
-            for(let i = 0; i < gear.twohand.length; i++)
+            for (let i = 0; i < gear.twohand.length; i++)
                 gear.twohand[i].selected = false;
-            for(let i = 0; i < enchant.twohand.length; i++)
+            for (let i = 0; i < enchant.twohand.length; i++)
                 enchant.twohand[i].selected = false;
         }
     },
 
-    rowHideItem: function(tr) {
+    rowHideItem: function (tr) {
         var table = tr.parents('table');
         var type = table.data('type');
         tr.removeClass('active');
         tr.addClass('hidden');
         tr.find('.hide').html(eyesvghidden);
-        for(let i = 0; i < gear[type].length; i++) {
+        for (let i = 0; i < gear[type].length; i++) {
             if (gear[type][i].id == tr.data('id')) {
                 gear[type][i].hidden = true;
                 gear[type][i].selected = false;
@@ -500,44 +501,44 @@ SIM.UI = {
         }
     },
 
-    rowShowItem: function(tr) {
+    rowShowItem: function (tr) {
         var table = tr.parents('table');
         var type = table.data('type');
         tr.removeClass('hidden');
         tr.find('.hide').html(eyesvg);
-        for(let i = 0; i < gear[type].length; i++) {
+        for (let i = 0; i < gear[type].length; i++) {
             if (gear[type][i].id == tr.data('id'))
                 gear[type][i].hidden = false;
         }
     },
 
-    rowDisableEnchant: function(tr) {
+    rowDisableEnchant: function (tr) {
         var table = tr.parents('table');
         var type = table.data('type');
         tr.removeClass('active');
-        for(let i = 0; i < enchant[type].length; i++) {
+        for (let i = 0; i < enchant[type].length; i++) {
             if (enchant[type][i].id == tr.data('id'))
                 enchant[type][i].selected = false;
         }
     },
 
-    rowEnableEnchant: function(tr) {
+    rowEnableEnchant: function (tr) {
         var table = tr.parents('table');
         var type = table.data('type');
         tr.addClass('active');
-        for(let i = 0; i < enchant[type].length; i++) {
+        for (let i = 0; i < enchant[type].length; i++) {
             if (enchant[type][i].id == tr.data('id'))
                 enchant[type][i].selected = true;
         }
     },
 
-    rowHideEnchant: function(tr) {
+    rowHideEnchant: function (tr) {
         var table = tr.parents('table');
         var type = table.data('type');
         tr.removeClass('active');
         tr.addClass('hidden');
         tr.find('.hide').html(eyesvghidden);
-        for(let i = 0; i < enchant[type].length; i++) {
+        for (let i = 0; i < enchant[type].length; i++) {
             if (enchant[type][i].id == tr.data('id')) {
                 enchant[type][i].hidden = true;
                 enchant[type][i].selected = false;
@@ -545,25 +546,25 @@ SIM.UI = {
         }
     },
 
-    rowShowEnchant: function(tr) {
+    rowShowEnchant: function (tr) {
         var table = tr.parents('table');
         var type = table.data('type');
         tr.removeClass('hidden');
         tr.find('.hide').html(eyesvg);
-        for(let i = 0; i < enchant[type].length; i++) {
+        for (let i = 0; i < enchant[type].length; i++) {
             if (enchant[type][i].id == tr.data('id'))
                 enchant[type][i].hidden = false;
         }
     },
 
-    startLoading: function() {
+    startLoading: function () {
         let btns = $('.js-dps, .js-weights, .js-table, .js-enchant');
         btns.addClass('loading');
         btns.append('<span class="spinner"><span class="bounce1"></span><span class="bounce2"></span><span class="bounce3"></span></span>');
         $('section.main nav').addClass('loading');
     },
 
-    endLoading: function() {
+    endLoading: function () {
         let btns = $('.js-dps, .js-weights, .js-table, .js-enchant');
         btns.removeClass('loading');
         btns.find('.spinner').remove();
@@ -587,7 +588,7 @@ SIM.UI = {
         view.sidebar.find('#crit').html(mhcrit.toFixed(2) + '% <small>MH</small>' + (player.oh ? space + ohcrit.toFixed(2) + '% <small>OH</small>' : ''));
         let mhcap = 100 - player.mh.dwmiss - player.mh.dodge - player.mh.glanceChance;
         let ohcap = player.oh ? 100 - player.oh.dwmiss - player.oh.dodge - player.oh.glanceChance : 0;
-        view.sidebar.find('#critcap').html(mhcap.toFixed(2) + '% <small>MH</small>'+ (player.oh ? space + ohcap.toFixed(2) + '% <small>OH</small>' : ''));
+        view.sidebar.find('#critcap').html(mhcap.toFixed(2) + '% <small>MH</small>' + (player.oh ? space + ohcap.toFixed(2) + '% <small>OH</small>' : ''));
         let mhdmg = player.stats.dmgmod * player.mh.modifier * 100;
         let ohdmg = player.stats.dmgmod * (player.oh ? player.oh.modifier * 100 : 0);
         view.sidebar.find('#dmgmod').html(mhdmg.toFixed(2) + '% <small>MH</small>' + (player.oh ? space + ohdmg.toFixed(2) + '% <small>OH</small>' : ''));
@@ -628,15 +629,21 @@ SIM.UI = {
         localStorage.batching = view.fight.find('select[name="batching"]').val();
 
         let _buffs = [], _rotation = [], _talents = [], _sources = [], _phases = [], _gear = {}, _enchant = {};
-        view.buffs.find('.active').each(function () { _buffs.push($(this).attr('data-id')); });
-        view.filter.find('.sources .active').each(function () { _sources.push($(this).attr('data-id')); });
-        view.filter.find('.phases .active').each(function () { _phases.push($(this).attr('data-id')); });
+        view.buffs.find('.active').each(function () {
+            _buffs.push($(this).attr('data-id'));
+        });
+        view.filter.find('.sources .active').each(function () {
+            _sources.push($(this).attr('data-id'));
+        });
+        view.filter.find('.phases .active').each(function () {
+            _phases.push($(this).attr('data-id'));
+        });
 
         for (let tree of talents) {
             let arr = [];
             for (let talent of tree.t)
                 arr.push(talent.c);
-            _talents.push({ n: tree.n, t: arr });
+            _talents.push({n: tree.n, t: arr});
         }
 
         view.rotation.find('.spell').each(function () {
@@ -652,14 +659,14 @@ SIM.UI = {
         for (let type in gear) {
             _gear[type] = [];
             for (let item of gear[type]) {
-                _gear[type].push({id:item.id,selected:item.selected,dps:item.dps,hidden:item.hidden});
+                _gear[type].push({id: item.id, selected: item.selected, dps: item.dps, hidden: item.hidden});
             }
         }
 
         for (let type in enchant) {
             _enchant[type] = [];
             for (let item of enchant[type]) {
-                _enchant[type].push({id:item.id,selected:item.selected,dps:item.dps,hidden:item.hidden});
+                _enchant[type].push({id: item.id, selected: item.selected, dps: item.dps, hidden: item.hidden});
             }
         }
 
@@ -670,6 +677,23 @@ SIM.UI = {
         localStorage.talents = JSON.stringify(_talents);
         localStorage.gear = JSON.stringify(_gear);
         localStorage.enchant = JSON.stringify(_enchant);
+
+        console.log("buffs")
+        console.log(localStorage.buffs)
+        console.log("rotation")
+        console.log(localStorage.rotation)
+        console.log("sources")
+        console.log(localStorage.sources)
+        console.log("phases")
+        console.log(localStorage.phases)
+        console.log("talents")
+        console.log(localStorage.talents)
+        console.log("gear")
+        console.log(localStorage.gear)
+        console.log("enchant")
+        console.log(localStorage.enchant)
+
+
     },
 
     loadSession: function () {
@@ -707,11 +731,11 @@ SIM.UI = {
     filterGear: function () {
         var view = this;
         var type = view.main.find('nav > ul > li.active').data('type');
-        if (type == "mainhand" || type == "offhand") 
+        if (type == "mainhand" || type == "offhand")
             view.loadWeapons(type);
-        else if (type == "custom") 
+        else if (type == "custom")
             view.loadCustom();
-        else 
+        else
             view.loadGear(type);
     },
 
@@ -747,11 +771,9 @@ SIM.UI = {
             if (filter && filter != "All") {
                 if (filter == "Mace & Sword") {
                     if (item.type != "Mace" && item.type != "Sword") continue;
-                }
-                else if (filter == "Axe, Dagger & Sword") {
-                    if (item.type != "Axe"  && item.type != "Dagger" && item.type != "Sword") continue; 
-                }
-                else if (item.type != filter)
+                } else if (filter == "Axe, Dagger & Sword") {
+                    if (item.type != "Axe" && item.type != "Dagger" && item.type != "Sword") continue;
+                } else if (item.type != filter)
                     continue;
             }
 
@@ -769,7 +791,7 @@ SIM.UI = {
             let tooltip = item.id, rand = '';
             if (tooltip == 199211) tooltip = 19921;
             if (item.rand) rand = '?rand=' + item.rand;
-                
+
             table += `<tr data-id="${item.id}" data-name="${item.name}" class="${item.selected ? 'active' : ''} ${item.hidden ? 'hidden' : ''}">
                         ${editmode ? '<td class="hide">' + (item.hidden ? eyesvghidden : eyesvg) + '</td>' : ''}
                         <td><a href="https://classic.wowhead.com/item=${tooltip}${rand}"></a>${item.name}</td>
@@ -796,18 +818,18 @@ SIM.UI = {
         view.tcontainer.append(table);
         view.tcontainer.find('table.gear').tablesorter({
             widthFixed: true,
-            sortList: editmode ?  [[15, 1],[1, 0]] : [[14, 1],[0, 0]],
-            textSorter : {
-                14 : function(a, b, direction, column, table) {
-                    var a = parseFloat(a.substring(0,a.indexOf('.') + 3));
-                    var b = parseFloat(b.substring(0,b.indexOf('.') + 3));
-                    if (isNaN(a)) a = 0; 
-                    if (isNaN(b)) b = 0; 
+            sortList: editmode ? [[15, 1], [1, 0]] : [[14, 1], [0, 0]],
+            textSorter: {
+                14: function (a, b, direction, column, table) {
+                    var a = parseFloat(a.substring(0, a.indexOf('.') + 3));
+                    var b = parseFloat(b.substring(0, b.indexOf('.') + 3));
+                    if (isNaN(a)) a = 0;
+                    if (isNaN(b)) b = 0;
                     return (a < b) ? -1 : (a > b) ? 1 : 0;
                 },
             },
             headers: {
-                14: { sorter: "text" }
+                14: {sorter: "text"}
             }
         });
 
@@ -843,9 +865,9 @@ SIM.UI = {
             if (item.source == 'Lethon' || item.source == 'Emeriss' || item.source == 'Kazzak' || item.source == 'Azuregos' || item.source == 'Ysondre' || item.source == 'Taerar' || item.source == 'Green Dragons')
                 source = 'worldboss';
 
-            if (max == 2 && 
+            if (max == 2 &&
                 ((phase && !view.filter.find('.phases [data-id="' + phase + '"]').hasClass('active')) ||
-                (source && !view.filter.find('.sources [data-id="' + source + '"]').hasClass('active'))))
+                    (source && !view.filter.find('.sources [data-id="' + source + '"]').hasClass('active'))))
                 item.selected = false;
 
             if (phase && !view.filter.find('.phases [data-id="' + phase + '"]').hasClass('active'))
@@ -882,18 +904,18 @@ SIM.UI = {
         view.tcontainer.append(table);
         view.tcontainer.find('table.gear').tablesorter({
             widthFixed: true,
-            sortList: editmode ? [[11, 1],[1, 0]] : [[10, 1],[0, 0]],
-            textSorter : {
-                10 : function(a, b, direction, column, table) {
-                    var a = parseFloat(a.substring(0,a.indexOf('.') + 3));
-                    var b = parseFloat(b.substring(0,b.indexOf('.') + 3));
-                    if (isNaN(a)) a = 0; 
-                    if (isNaN(b)) b = 0; 
+            sortList: editmode ? [[11, 1], [1, 0]] : [[10, 1], [0, 0]],
+            textSorter: {
+                10: function (a, b, direction, column, table) {
+                    var a = parseFloat(a.substring(0, a.indexOf('.') + 3));
+                    var b = parseFloat(b.substring(0, b.indexOf('.') + 3));
+                    if (isNaN(a)) a = 0;
+                    if (isNaN(b)) b = 0;
                     return (a < b) ? -1 : (a > b) ? 1 : 0;
                 },
             },
             headers: {
-                10: { sorter: "text" }
+                10: {sorter: "text"}
             }
         });
 
@@ -1006,33 +1028,44 @@ SIM.UI = {
     addAlert: function (msg) {
         var view = this;
         view.alerts.empty().append('<div class="alert"><p>' + msg + '</p></div>');
-        view.alerts.find('.alert').click(function () { view.closeAlert(); });
-        setTimeout(function () { view.alerts.find('.alert').addClass('in-up') });
-        setTimeout(function () { view.closeAlert(); }, 4000);
+        view.alerts.find('.alert').click(function () {
+            view.closeAlert();
+        });
+        setTimeout(function () {
+            view.alerts.find('.alert').addClass('in-up')
+        });
+        setTimeout(function () {
+            view.closeAlert();
+        }, 4000);
     },
-    
+
     closeAlert: function () {
         var view = this;
         view.alerts.find('.alert').removeClass('in-up');
-        setTimeout(function () { view.alerts.empty(); }, 1000);
+        setTimeout(function () {
+            view.alerts.empty();
+        }, 1000);
     },
 
     firstSession: function () {
         console.log('Welcome!');
     },
 
-    newVersion: function() {
+    newVersion: function () {
         var view = this;
 
         localStorage.version = version;
 
         if (!view.filter.find(`.phases [data-id="4"]`).hasClass('active'))
-            setTimeout(() => { view.filter.find(`.phases [data-id="4"]`).click() }, 100);
+            setTimeout(() => {
+                view.filter.find(`.phases [data-id="4"]`).click()
+            }, 100);
         if (!view.filter.find(`.phases [data-id="5"]`).hasClass('active'))
-            setTimeout(() => { view.filter.find(`.phases [data-id="5"]`).click() }, 100);
+            setTimeout(() => {
+                view.filter.find(`.phases [data-id="5"]`).click()
+            }, 100);
 
     }
-    
 
 
 };

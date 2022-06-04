@@ -323,6 +323,48 @@ class Recklessness extends Aura {
     }
 }
 
+class FungalBloom extends Aura {
+    constructor(player) {
+        super(player);
+        this.duration = 90;
+        this.stats = { crit: 50 };
+        this.maxdelay = parseInt(spells[21].reaction);
+        this.timetoend = parseInt(spells[21].timetoend) * 1000;
+    }
+    use() {
+        if (this.timer) this.uptime += (step - this.starttimer);
+        this.timer = step + this.duration * 1000;
+        this.player.timer = 1500;
+        this.starttimer = step;
+        this.player.updateAuras();
+        //if (log) this.player.log(`${this.name} applied`);
+    }
+    canUse() {
+        return this.firstuse && !this.timer && !this.player.timer && step >= this.usestep;
+    }
+}
+
+class ThadiusCharge extends Aura {
+    constructor(player) {
+        super(player);
+        this.duration = 30;
+        this.stats = { dmgmod: 190 };
+        this.maxdelay = parseInt(spells[21].reaction);
+        this.timetoend = parseInt(spells[21].timetoend) * 1000;
+    }
+    use() {
+        if (this.timer) this.uptime += (step - this.starttimer);
+        this.timer = step + this.duration * 1000;
+        this.player.timer = 1500;
+        this.starttimer = step;
+        this.player.updateAuras();
+        //if (log) this.player.log(`${this.name} applied`);
+    }
+    canUse() {
+        return this.firstuse && !this.timer && !this.player.timer && step >= this.usestep;
+    }
+}
+
 class Flurry extends Aura {
     constructor(player) {
         super(player);

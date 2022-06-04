@@ -68,6 +68,8 @@ onmessage = (event) => {
         spellOptions(16, "globals", "reaction"); // Sunder Armor
         spellOptions(18, "minrage", "reaction"); // Hamstring
         spellOptions(19, "minrage", "unqueue", "unqueuetimer", "reaction"); // Heroic Strike (Execute Phase)
+        spellOptions(20, "timetoend"); //
+        spellOptions(21, "timetoend"); //
 
         const configPtr = module._allocConfig();
         const cfg = configPtr >> 2;
